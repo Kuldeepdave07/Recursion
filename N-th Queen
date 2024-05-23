@@ -1,0 +1,89 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<iomanip>
+using namespace std;
+bool isSafe(vector<string> board, int row, int colum, int n){
+     int x = row;
+     int y = colum;
+
+       // Checking For Row
+        while(y>=0){
+           if(board[x][y] == 'Q') return false;
+           y--;
+        }
+         
+         // Checking For diagonal
+          x = row;
+          y = colum;
+          while(x>=0 && y>=0){
+             if(board[x][y] == 'Q') return false;
+              x--;
+              y--;
+          }
+           x = row;
+           y = colum;
+          while(x<n && y>=0){
+             if(board[x][y] == 'Q') return false;
+              x++;
+              y--;
+          }
+          return true;
+ }
+
+ void solve( vector<vector<string>> &ans, vector<string> &board, int colum, int n){
+ 
+      // Base Condition
+         if(colum == n){
+         //addSolution(ans,board,n);
+         ans.push_back(board);
+         return ;
+     }
+        
+        for(int row = 0; row < n; row++){
+            if(isSafe(board, row, colum, n)){
+                // if placing is safe
+                board[row][colum] = 'Q';
+                solve(ans, board, colum+1, n);
+                // backtracking
+            }
+                board[row][colum] = '.';
+        }
+
+ }
+    vector<vector<string>> solveNQueens(int n) {
+
+        vector<vector<string>> ans;
+        vector<string> board(n);
+        string s(n, '.');
+        for(int i=0; i<n; i++){
+            board[i] = s;
+        }
+        solve(ans,board,0,n);
+        return ans;
+    }
+int main(){
+    int sizeOfBoard;
+    cin>>sizeOfBoard;
+    vector<vector<string>> solutions = solveNQueens(sizeOfBoard);
+
+      int solutionNumber = 1;
+    for(const auto& solution : solutions) {
+        cout << "Solution " << solutionNumber << ":" << endl;
+        cout << "  ";
+        for(int i = 1; i <= solution.size(); ++i) {
+            cout << setw(3) << i;
+        }
+        cout << endl;
+        int rowNum = 1;
+        for(const auto& row : solution) {
+            cout << rowNum++ << " ";
+            for(const auto& cell : row) {
+                cout << setw(3) << cell;
+            }
+            cout << endl;
+        }
+        cout << endl;
+        solutionNumber++;
+    }
+}
