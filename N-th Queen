@@ -62,6 +62,7 @@ bool isSafe(vector<string> board, int row, int colum, int n){
         solve(ans,board,0,n);
         return ans;
     }
+
 int main(){
     int sizeOfBoard;
     cin>>sizeOfBoard;
